@@ -28,8 +28,10 @@ public class BoardBuildFrame extends JFrame implements ActionListener {
 	final String TITLE = "Minesweeper";
 
 	JButton btnReset = new JButton("Reset");
+	JButton btnLevelChange = new JButton("Change Difficulty");
 	JButton[][] boardButtons;
 	JPanel gridPanel = new JPanel();
+	JPanel bottomPanel = new JPanel();
 
 	public void setHeightWidth(int h, int w) {
 		gridHeight = h;
@@ -42,7 +44,14 @@ public class BoardBuildFrame extends JFrame implements ActionListener {
 		JLabel lblTitle = new JLabel(TITLE);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblTitle, BorderLayout.NORTH);
-		this.add(btnReset, BorderLayout.SOUTH);
+
+		btnReset.addActionListener(this);
+		btnLevelChange.addActionListener(this);
+		bottomPanel.setLayout(new GridLayout(1, 2));
+		bottomPanel.add(btnReset);
+		bottomPanel.add(btnLevelChange);
+
+		this.add(bottomPanel, BorderLayout.SOUTH);
 		setGrid(gridHeight, gridWidth);
 		this.add(gridPanel, BorderLayout.CENTER);
 	}
@@ -72,10 +81,26 @@ public class BoardBuildFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnLevelChange) {
+			System.out.println("change");
+			for (int x = 0; x < gridWidth; x++) {
+				for (int y = 0; y < gridHeight; y++) {
+					gridPanel.remove(boardButtons[x][y]);
+				}
+			}
+			setGrid(gridHeight, gridWidth);//set new grid
+			this.add(gridPanel, BorderLayout.CENTER);
+			revalidate();
+			repaint();
+
+		} else if (e.getSource() == btnReset) {
+
+		}
 		for (int x = 0; x < gridWidth; x++) {
 			for (int y = 0; y < gridHeight; y++) {
-				if (e.getSource() == boardButtons[x][y])
+				if (e.getSource() == boardButtons[x][y]) {
 					System.out.println(x + "," + y);
+				}
 			}
 		}
 
