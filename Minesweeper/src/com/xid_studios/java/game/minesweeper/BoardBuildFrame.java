@@ -23,9 +23,11 @@ import javax.swing.WindowConstants;
  */
 @SuppressWarnings("serial")
 public class BoardBuildFrame extends JFrame implements ActionListener {
-	int gridHeight = 10, gridWidth = 10;
+	int gridHeight = 10, gridWidth = 10, gridMines = 7;
 	final int BOARD_HEIGHT = 450, BOARD_WIDTH = 500;
+	int[][] valueMask;
 	final String TITLE = "Minesweeper";
+	private ValueCreation valueGen;
 
 	JButton btnReset = new JButton("Reset");
 	JButton btnLevelChange = new JButton("Change Difficulty");
@@ -52,18 +54,21 @@ public class BoardBuildFrame extends JFrame implements ActionListener {
 		bottomPanel.add(btnLevelChange);
 
 		this.add(bottomPanel, BorderLayout.SOUTH);
-		setGrid(gridHeight, gridWidth);
+		setGrid(gridHeight, gridWidth, gridMines);
 		this.add(gridPanel, BorderLayout.CENTER);
 	}
 
-	public void setGrid(int h, int w) {
+	public void setGrid(int h, int w, int m) {
 		gridPanel.setLayout(new GridLayout(h, w));
 		boardButtons = new JButton[w][h];
+		valueMask = new int[w][h];
+		valueGen = new ValueCreation(h, w, m);
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
-				boardButtons[x][y] = new JButton();
 				boardButtons[x][y].addActionListener(this);
 				gridPanel.add(boardButtons[x][y]);
+				valueMask[x][y] = valueGen.getMaskValues(x, y);
+				boardButtons[x][y] = new JButton("" + valueMask[x][y]);
 			}
 		}
 	}
@@ -88,7 +93,7 @@ public class BoardBuildFrame extends JFrame implements ActionListener {
 					gridPanel.remove(boardButtons[x][y]);
 				}
 			}
-			setGrid(gridHeight, gridWidth);//set new grid
+			// setGrid(gridHeight, gridWidth);//set new grid
 			this.add(gridPanel, BorderLayout.CENTER);
 			revalidate();
 			repaint();
