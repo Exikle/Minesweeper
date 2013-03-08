@@ -1,3 +1,4 @@
-Minesweeper
+Minesweeper - Suspended Till Someone Picks It Up
 =========== 
-Suspended Till Someone Picks It Up
+
+Classic Minesweeper
